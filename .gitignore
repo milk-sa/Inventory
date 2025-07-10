@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.swp
+
+# Django
+db.sqlite3
+*.log
+.env
+
+# Virtual environment
+venv/
+ENV/
+env/
+
+# VS Code
+.vscode/
+
+# Mac OS
+.DS_Store
+
+# Pycharm
+.idea/
