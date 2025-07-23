@@ -1,5 +1,9 @@
 from rest_framework import serializers
 from .models import *
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from .models import EmployeeProfile
+
 
 # Serializer for Category model
 class CategorySerializer(serializers.ModelSerializer):
@@ -56,3 +60,18 @@ class StockEntrySerializer(serializers.ModelSerializer):
         model = StockEntry
         fields = ['id', 'product', 'product_id', 'entry_type', 'quantity', 'date']
 
+class EmployeeCreateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        # Create EmployeeProfile with is_employee=True
+        EmployeeProfile.objects.create(user=user, is_employee=True)
+        return user
